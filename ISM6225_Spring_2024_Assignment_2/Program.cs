@@ -100,7 +100,19 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                if (nums.Length == 0)
+                {  
+                    return 0; 
+                }
+                int k = 1;
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    if (nums[i] != nums[i - 1])
+                    {
+                        nums[k++] = nums[i];
+                    }
+                }
+                return k;
             }
             catch (Exception)
             {
@@ -135,7 +147,21 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<int>();
+                int nonZeroIndex = 0;
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    if (nums[i] != 0)
+                    {
+                        nums[nonZeroIndex++] = nums[i];
+                    }
+                }
+
+                for (int i = nonZeroIndex; i < nums.Length; i++)
+                {
+                    nums[i] = 0;
+                }
+
+                return new List<int>(nums);
             }
             catch (Exception)
             {
@@ -186,7 +212,40 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                Array.Sort(nums);
+                List<IList<int>> result = new List<IList<int>>();
+
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    if (i == 0 || (i > 0 && nums[i] != nums[i - 1]))
+                    {
+                        int low = i + 1;
+                        int high = nums.Length - 1;
+                        int total = 0 - nums[i];
+
+                        while (low < high)
+                        {
+                            if (nums[low] + nums[high] == total)
+                            {
+                                result.Add(new List<int> { nums[i], nums[low], nums[high] });
+                                while (low < high && nums[low] == nums[low + 1]) low++;
+                                while (low < high && nums[high] == nums[high - 1]) high--;
+                                low++;
+                                high--;
+                            }
+                            else if (nums[low] + nums[high] < total)
+                            {
+                                low++;
+                            }
+                            else
+                            {
+                                high--;
+                            }
+                        }
+                    }
+                }
+
+                return result;
             }
             catch (Exception)
             {
@@ -221,7 +280,23 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                int maximumCount = 0;
+                int count = 0;
+
+                foreach (var num in nums)
+                {
+                    if (num == 1)
+                    {
+                        count++;
+                        maximumCount = Math.Max(maximumCount, count);
+                    }
+                    else
+                    {
+                        count = 0;
+                    }
+                }
+
+                return maximumCount;
             }
             catch (Exception)
             {
@@ -257,7 +332,18 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                int decimalNum = 0;
+                int value = 1;
+
+                while (binary > 0)
+                {
+                    int remainder = binary % 10;
+                    binary /= 10;
+                    decimalNum += remainder * value;
+                    value *= 2;
+                }
+
+                return decimalNum;
             }
             catch (Exception)
             {
@@ -295,7 +381,15 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                Array.Sort(nums);
+                int maximumGap = 0;
+
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    maximumGap = Math.Max(maximumGap, nums[i] - nums[i - 1]);
+                }
+
+                return maximumGap;
             }
             catch (Exception)
             {
@@ -335,6 +429,17 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
+                Array.Sort(nums);
+                int n = nums.Length;
+
+                for (int i = n - 1; i >= 2; i--)
+                {
+                    if (nums[i - 2] + nums[i - 1] > nums[i])
+                    {
+                        return nums[i - 2] + nums[i - 1] + nums[i];
+                    }
+                }
+
                 return 0;
             }
             catch (Exception)
@@ -389,7 +494,13 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return "";
+                while (s.Contains(part))
+                {
+                    int index = s.IndexOf(part);
+                    s = s.Remove(index, part.Length);
+                }
+
+                return s;
             }
             catch (Exception)
             {
