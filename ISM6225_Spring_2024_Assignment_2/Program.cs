@@ -7,6 +7,7 @@ WRITE YOUR CODE IN THE RESPECTIVE QUESTION FUNCTION BLOCK
 */
 
 using System.Text;
+using System.Xml.Linq;
 
 namespace ISM6225_Spring_2024_Assignment_2
 {
@@ -100,25 +101,39 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                if (nums.Length == 0)
+                if (nums.Length == 0) // checks if the length of the input array is 0
                 {  
-                    return 0; 
+                    return 0; // if array is empty returns 0
                 }
-                int k = 1;
-                for (int i = 1; i < nums.Length; i++)
+                int k = 1; //intializing k value to 1
+                for (int i = 1; i < nums.Length; i++)  // Iterate through the array starting from index 1.
+
                 {
-                    if (nums[i] != nums[i - 1])
+                    if (nums[i] != nums[i - 1])  // Check if the current element is different from the previous element.
+
                     {
-                        nums[k++] = nums[i];
+                        nums[k++] = nums[i]; // If the current element is different, store it at index k and increment k.
                     }
                 }
-                return k;
+                return k; // returns k value(length of modified array)
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+
+        /*
+         self reflection:
+         This has indeed given me a very good question, teaching me an important lesson in how to remove duplicates from the sorted array in place efficiently. 
+         This utilized two pointers and an iterative way to give me the desired result without any use of extra space.
+         This exercise has evidently brought out the importance of being good at array manipulation, which is a stepping stone for many other programming tasks. 
+         It emphasized the consideration to be taken when handling sorted arrays to ensure that these are effectively managed using two pointers, which streamline the processes involved in array manipulation.
+         Sorted arrays: When presented with sorted arrays, two pointers should be recommended for efficient in-place manipulation. 
+         This will also come with understanding the in-depth properties that are carried by sorted arrays, leading to optimized solutions. 
+         With the constant practice and working on tasks related to arrays, it will make the skill set for array manipulation better. 
+         This will eventually improve skills and, in turn, problem-solving skills, and those can be applied to order a wider variety of programming problems.
+         * 
 
         /*
         
@@ -143,31 +158,39 @@ namespace ISM6225_Spring_2024_Assignment_2
         */
 
         public static IList<int> MoveZeroes(int[] nums)
-        {
-            try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                int nonZeroIndex = 0;
-                for (int i = 0; i < nums.Length; i++)
+                try
                 {
-                    if (nums[i] != 0)
+                    // Write your code here and you can modify the return value according to the requirements
+                    int nonZeroIndex = 0;  // Declare and initialize a variable 
+
+                for (int i = 0; i < nums.Length; i++) //// Loop through the array 'nums'
+                {
+                        if (nums[i] != 0) // Check if the current element is not zero
+                        {
+                            nums[nonZeroIndex++] = nums[i]; // If non-zero, move it to the front of the array, at 'nonZeroIndex'
+                        }
+                }
+                    for (int i = nonZeroIndex; i < nums.Length; i++) // Fill the remaining elements of the array with zeroes
                     {
-                        nums[nonZeroIndex++] = nums[i];
+                        nums[i] = 0;
                     }
-                }
 
-                for (int i = nonZeroIndex; i < nums.Length; i++)
-                {
-                    nums[i] = 0;
-                }
+                    return new List<int>(nums);// Return a new list containing the modified array
 
-                return new List<int>(nums);
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+        /*
+         self reflection:  This exercise of dealing with an array that had specific requirements in which zeroes had to be moved to the end while keeping the relative ordering helped me very much to be very effective in handling any manipulations required in arrays. 
+         It largely reinforced learning on the need to move through arrays efficiently and handle edge cases gracefully.
+         This was explained, and in doing so, I understood vividly how to traverse arrays and how it is important that the structure of data be left intact during its manipulation.
+         To continue to develop skills in the manipulation of arrays, practice across different scenarios is strongly recommended. It is always full of fruitarian insights and an extension of perspectives when exploring an alternative way of doing a similar task, such as using a different structure of data or algorithm. Many different techniques for array manipulation will be learned during the exercise in trying out different kinds of approaches with diverse strategies and how they find use in varied contexts. Involving more on the subject of algorithmic efficiency and time complexity analysis would assist me in this way and would bring about a more meaningful approach toward the solution of array manipulation tasks.
+         * 
+
 
         /*
 
@@ -212,46 +235,51 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                Array.Sort(nums);
-                List<IList<int>> result = new List<IList<int>>();
+                Array.Sort(nums);        // Sort the input array of integers in ascending order
+                List<IList<int>> result = new List<IList<int>>();        // Initialize a list to store the result (triplets that sum up to zero)
+                for (int i = 0; i < nums.Length - 2; i++)        // Loop through the input array, stopping two elements before the end since we need at least three elements for a triplet
 
-                for (int i = 0; i < nums.Length - 2; i++)
                 {
-                    if (i == 0 || (i > 0 && nums[i] != nums[i - 1]))
+                    if (i == 0 || (i > 0 && nums[i] != nums[i - 1]))            // Check if the current element is the first element or different from the previous one to avoid duplicate triplets
                     {
-                        int low = i + 1;
-                        int high = nums.Length - 1;
-                        int total = 0 - nums[i];
-
-                        while (low < high)
+                        int low = i + 1;                 // Set the low pointer to the next element after the current one
+                        int high = nums.Length - 1;                 // Set the high pointer to the last element in the array
+                        int total = 0 - nums[i];                 // Calculate the target sum for the triplet
+                        while (low < high)                 // Execute a while loop to find pairs that sum up to the target sum
                         {
-                            if (nums[low] + nums[high] == total)
+                            if (nums[low] + nums[high] == total) // If the sum of the elements at low and high pointers equals the target sum
                             {
-                                result.Add(new List<int> { nums[i], nums[low], nums[high] });
-                                while (low < high && nums[low] == nums[low + 1]) low++;
-                                while (low < high && nums[high] == nums[high - 1]) high--;
-                                low++;
+                                result.Add(new List<int> { nums[i], nums[low], nums[high] }); // Add the triplet to the result list
+                                while (low < high && nums[low] == nums[low + 1]) low++;  // Skip over any duplicate elements at the low pointer
+                                while (low < high && nums[high] == nums[high - 1]) high--;  // Skip over any duplicate elements at the high pointer
+                                low++;                        // Move the low pointer to the next element and the high pointer to the previous element
                                 high--;
                             }
-                            else if (nums[low] + nums[high] < total)
+                            else if (nums[low] + nums[high] < total)  // If the sum of the elements at low and high pointers is less than the target sum
                             {
-                                low++;
+                                low++; // Move the low pointer to the next element
+
                             }
-                            else
+                            else  // If the sum of the elements at low and high pointers is greater than the target sum
                             {
-                                high--;
+                                high--;                         // Move the high pointer to the previous element
                             }
                         }
                     }
                 }
-
-                return result;
+                return result;         // Return the list of triplets that sum up to zero
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+        /*
+         self reflection: Solving the three-sum problem was an intellectually stimulating exercise that made me dig into critical thinking over efficient algorithms in order to find triplets of elements summing up to zero. 
+         Over the process, the task reinstated sorting of arrays before two-pointer techniques were applied to improve time complexity. It reinstated careful array manipulation and consideration of edge cases to cover accurate and effective results.
+         This process further instilled in me more appreciation for the algorithmic strategies and the practical relevance they assume in real-life situations, which call for problem-solving.
+         I could increase my problem-solving ability by taking more difficult algorithms tailored for the solution of array problems. I could even go further to study on dynamic programming or binary searching, where I can learn how to design algorithms while optimizing them. Furthermore, I got to realize the time and space complexity of the algorithms that lead me into deciding while solving problems. So, I would like to read up on the topics with time and get quite a grip on them at least to produce slightly better or more scalable solutions in future pursuits.
+         * 
 
         /*
 
@@ -280,29 +308,33 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                int maximumCount = 0;
-                int count = 0;
-
-                foreach (var num in nums)
+                int maximumCount = 0;         // Initialize a variable named maximumCount to store the maximum count of consecutive ones found.
+                int count = 0;         // Initialize a variable named count to store the current count of consecutive ones.
+                foreach (var num in nums)         // Iterate through each element (num) in the input array (nums) using a foreach loop.
                 {
-                    if (num == 1)
+                    if (num == 1)             // Check if the current element (num) is equal to 1.
                     {
-                        count++;
-                        maximumCount = Math.Max(maximumCount, count);
+                        count++;                 // If the current element is 1, increment the count of consecutive ones.
+                        maximumCount = Math.Max(maximumCount, count);                 // Update the maximumCount with the maximum value between maximumCount and the current count.
                     }
                     else
                     {
-                        count = 0;
+                        count = 0;                // If the current element is not 1, reset the count of consecutive ones to 0.
                     }
                 }
-
-                return maximumCount;
+                return maximumCount;         // Return the maximum count of consecutive ones found.
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+        /*
+         Self-reflection: This is a task whereby sharp iteration and keeping a count are key to arriving at the maximum consecutive ones in the binary array.
+         It just elicits an understanding of the importance of well-understood problem constraints, which, therefore, make solutions thought out to be in such a manner that they meet the constraints yet gain optimality in performance.
+         Involving myself in this problem, it added better insight into binary array manipulation and subtleties of ways to maximize consecutive ones.
+         Understand and solve problems related to bitwise operations and array traversals in binary arrays by practicing a good number of problems based on it. Also, try to optimize and incorporate the maximum optimization techniques for improvement in time and space complexity. This way, by checking out other ways and how effective they are, it will be gained very valuable knowledge about the efficiency of the algorithmic and improvement of problems' solution. Active learning and practical experience with these exercises will further consolidate deeper insight into binary array manipulations and their applications in all walks of computational based tasks.
+         * 
 
         /*
 
@@ -332,24 +364,32 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                int decimalNum = 0;
-                int value = 1;
-
-                while (binary > 0)
+                int decimalNum = 0;         // Initialize decimalNum to store the final decimal value
+                int value = 1;         // Initialize value to represent the current power of 2 being applied
+                while (binary > 0)         // Iterate through each digit of the binary number until none are left
                 {
-                    int remainder = binary % 10;
-                    binary /= 10;
-                    decimalNum += remainder * value;
-                    value *= 2;
+                    int remainder = binary % 10;             // Extract the rightmost digit (remainder) of the binary number
+                    binary /= 10;             // Remove the rightmost digit from the binary number
+                    decimalNum += remainder * value;             // Update decimalNum by adding the product of remainder and current power of 2
+                    value *= 2;             // Update the value to represent the next higher power of 2
                 }
 
-                return decimalNum;
+                return decimalNum;         // Return the calculated decimal value
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+        /*
+         Self-reflection: The trouble with solving the problem of how to convert from a binary number to a decimal number without using bitwise operators was fairly great.
+         It called for great thinking out of the box and extremely solid understanding of arithmetic operations.
+         But doing the same—with only basic arithmetic operations at my disposal and avoiding those with the bitwise operations—resulted in some very diligent manipulation of digits at my end so that I could safely convert from the binary representation to the correct decimal equivalence while taking all precautions to avoid mistakes.
+         This further highlights the fact of the need for algorithmic thinking and basic principles of mathematics for every concept of computer science.
+         Further research needs to be conducted in number system conversions and arithmetic operations to enhance problem-solving capabilities in this area. With more practice sessions of this kind, where the algorithms are to be implemented without built-in functions, one goes deeper into the subtleties of numeric conversion and reinforces their algorithmic thinking. 
+         Besides, trying different techniques and perfecting the algorithms for efficiency shall make it one of the even more learned and experienced ways of doing things. 
+         With further honing of the skills, a strong toolkit can be developed to take up challenges effectively so that mastery is ensured over the realm of number manipulation and algorithm design.
+         *
 
         /*
 
@@ -381,22 +421,26 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                Array.Sort(nums);
-                int maximumGap = 0;
-
-                for (int i = 1; i < nums.Length; i++)
+                Array.Sort(nums);         // Sort the input array in ascending order
+                int maximumGap = 0;         // Initialize a variable to hold the maximum gap
+                for (int i = 1; i < nums.Length; i++)         // Iterate through the sorted array starting from the second element
                 {
-                    maximumGap = Math.Max(maximumGap, nums[i] - nums[i - 1]);
+                    maximumGap = Math.Max(maximumGap, nums[i] - nums[i - 1]); // Calculate the difference between consecutive elements and update the maximum gap if the current difference is greater
                 }
-
-                return maximumGap;
+                return maximumGap;         // Return the maximum gap found in the sorted array
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
-
+        /*
+        Self-reflection: Engaging in the computation of the maximum gap between elements of a sorted array was a deep learning experience. 
+        It also helped improve my skills in sorting algorithms while emphasis was placed on the very critical factor of data structures and suitable algorithm selection for specific problem constraints.
+        In this manner, the sorting techniques and their applications in this case are formed for deriving ways to improve the performance and efficiency of the algorithmic solutions.
+        Future readings for better understanding might involve sorting algorithms and their complex implementations. You could get drowned in all those small details of the techniques—quicksort, mergesort, heapsort, and so on—but take them all in, and you have a pretty good feel for the time and space complexities. 
+        Besides, the trials of trying varied ways of solving array-related problems will serve to be creative in the design of algorithms. 
+        To embrace the mindset of always exploring and experimenting is something destined to contribute toward mastery in the software development and computational problem-solving space.
         /*
 
         Question:7
@@ -429,24 +473,33 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                Array.Sort(nums);
-                int n = nums.Length;
-
-                for (int i = n - 1; i >= 2; i--)
+                Array.Sort(nums);         // Sort the array in ascending order to easily find the largest perimeter.
+                int n = nums.Length;         // Get the length of the array.
+                for (int i = n - 1; i >= 2; i--)         // Iterate through the array starting from the end, as we want to find the largest perimeter.
                 {
-                    if (nums[i - 2] + nums[i - 1] > nums[i])
+                    if (nums[i - 2] + nums[i - 1] > nums[i])             // Check if the sum of two smaller sides is greater than the largest side.
                     {
-                        return nums[i - 2] + nums[i - 1] + nums[i];
+                        return nums[i - 2] + nums[i - 1] + nums[i];                 // If the condition is met, return the sum of the sides, which represents the largest perimeter.
                     }
                 }
+                return 0;         // If no valid triangle can be formed, return 0.
 
-                return 0;
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+        /*
+         Self-reflection: Solving the assignment of finding the largest perimeter of a triangle made me dig deep into the details of geometric computations.
+         I was able to recall that basic geometric knowledge does become helpful while solving problems algorithmically. 
+         The above-mentioned challenge, as explained, forced me to consider thinking innovatively in identifying valid triangle combinations which needed both geometric constraints and attention due to the algorithmic strategies used.
+         In this regard, I further wish to address other geometric algorithms and their own uses as tools in practice towards problem-solving within computation. 
+         This will definitely enhance my understanding of geometric ideas and improve my overall approach to problem-solving, way much better.
+         I will also try to get some practice breaking complicated geometric problems down into smaller, more manageable subproblems. 
+         This will help enlighten not just the understanding of the problems in me but also how much better, efficient, and elegant the solutions have to be devised.
+         So, I shall get improvement in my knowledge of this sphere and get brushed up on my problem-solving techniques in geometry to solve more dexterously a wider range of computational problems.
+         * 
 
         /*
 
@@ -494,19 +547,25 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                while (s.Contains(part))
+                while (s.Contains(part)) // Check if the string 's' contains the substring 'part'
                 {
-                    int index = s.IndexOf(part);
-                    s = s.Remove(index, part.Length);
+                    int index = s.IndexOf(part); // Find the index of the first occurrence of 'part' in 's'
+                    s = s.Remove(index, part.Length); // Remove 'part' from 's' starting from the found index
                 }
-
-                return s;
+                return s; // Return the modified string after removing all occurrences of 'part'
             }
             catch (Exception)
             {
-                throw;
+                throw; //Re-throw any exceptions
             }
         }
+        /*Self-reflection: Working on the task of removing occurrences of a substring from the string just emphasized how much care has to be taken while doing anything with string manipulation; it's full of subtleties and nuances.
+         This exercise highlights why it is important to learn different operations on strings and come up with proper algorithms of processing texts. Dealing with this problem brought out clearly how complex it is to have string integrity yet modify it; hence, good comprehension of the string manipulation techniques.
+         To further become proficient in text processing activities, it is important to continue practicing solving problems of string manipulation.
+         This definitely includes the exploration of a variety of string algorithms and what they apply to in computational challenges.
+         In so doing, problem-solving skills in this area may be greatly enhanced. 
+         These help you deepen the knowledge and adaptability for providing solutions over various scenarios in text processing by not stopping experimenting around different kinds of techniques for string manipulation and the ways of applying them.
+         *
 
         /* Inbuilt Functions - Don't Change the below functions */
         static string ConvertIListToNestedList(IList<IList<int>> input)
